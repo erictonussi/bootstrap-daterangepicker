@@ -73,8 +73,8 @@
             cancelLabel: 'Cancel',
             weekLabel: 'W',
             customRangeLabel: 'Custom Range',
-            daysOfWeek: moment.weekdaysMin(),
-            monthNames: moment.monthsShort(),
+            daysOfWeek: moment.weekdaysShort(),
+            monthNames: moment.months(),
             firstDay: moment.localeData().firstDayOfWeek()
         };
 
@@ -95,27 +95,27 @@
 
         //html template for the picker UI
         if (typeof options.template !== 'string' && !(options.template instanceof $))
-            options.template = '<div class="daterangepicker dropdown-menu">' +
+            options.template = '<div class="daterangepicker dropdown-menu-" dropdown-keep>' +
                 '<div class="calendar left">' +
-                    '<div class="daterangepicker_input">' +
-                      '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />' +
-                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
-                      '<div class="calendar-time">' +
-                        '<div></div>' +
-                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
-                      '</div>' +
-                    '</div>' +
+                    // '<div class="daterangepicker_input">' +
+                      // '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />' +
+                      // '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
+                      // '<div class="calendar-time">' +
+                        // '<div></div>' +
+                        // '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
+                      // '</div>' +
+                    // '</div>' +
                     '<div class="calendar-table"></div>' +
                 '</div>' +
                 '<div class="calendar right">' +
-                    '<div class="daterangepicker_input">' +
-                      '<input class="input-mini form-control" type="text" name="daterangepicker_end" value="" />' +
-                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
-                      '<div class="calendar-time">' +
-                        '<div></div>' +
-                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
-                      '</div>' +
-                    '</div>' +
+                    // '<div class="daterangepicker_input">' +
+                      // '<input class="input-mini form-control" type="text" name="daterangepicker_end" value="" />' +
+                      // '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
+                      // '<div class="calendar-time">' +
+                        // '<div></div>' +
+                        // '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
+                      // '</div>' +
+                    // '</div>' +
                     '<div class="calendar-table"></div>' +
                 '</div>' +
                 '<div class="ranges">' +
@@ -332,7 +332,7 @@
 
                 // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
-                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) 
+                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day'))
                   || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day')))
                     continue;
 
@@ -701,21 +701,19 @@
             var selected = side == 'left' ? this.startDate : this.endDate;
             var arrow = this.locale.direction == 'ltr' ? {left: 'chevron-left', right: 'chevron-right'} : {left: 'chevron-right', right: 'chevron-left'};
 
-            var html = '<table class="table-condensed">';
-            html += '<thead>';
-            html += '<tr>';
+            var html = '';
 
             // add empty cell for week number
-            if (this.showWeekNumbers || this.showISOWeekNumbers)
-                html += '<th></th>';
+            // if (this.showWeekNumbers || this.showISOWeekNumbers)
+            //     html += '<th></th>';
 
-            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                html += '<th class="prev available"><i class="fa fa-' + arrow.left + ' glyphicon glyphicon-' + arrow.left + '"></i></th>';
-            } else {
-                html += '<th></th>';
-            }
 
-            var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
+            html += '<div class="month">';
+            // var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
+            var dateHtml = '\
+                <h3>' + this.locale.monthNames[calendar[1][1].month()] + '</h3>\
+                <h4>' + calendar[1][1].format("YYYY") + '</h4>\
+            ';
 
             if (this.showDropdowns) {
                 var currentMonth = calendar[1][1].month();
@@ -750,14 +748,30 @@
                 dateHtml = monthHtml + yearHtml;
             }
 
-            html += '<th colspan="5" class="month">' + dateHtml + '</th>';
-            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
-                html += '<th class="next available"><i class="fa fa-' + arrow.right + ' glyphicon glyphicon-' + arrow.right + '"></i></th>';
+
+            html += dateHtml;
+
+
+            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
+                html += '<div class="btn prev available"><i class="ti-angle-left"></i></div>';
             } else {
-                html += '<th></th>';
+                // html += '<th></th>';
             }
 
-            html += '</tr>';
+            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
+                html += '<div class="btn next available"><i class="ti-angle-right"></i></div>';
+            } else {
+                // html += '<th></th>';
+            }
+
+            html += '</div>';
+
+
+            // html += '</tr>';
+
+            html += '<table class="table-condensed">';
+            html += '<thead>';
+
             html += '<tr>';
 
             // add week number label
@@ -765,7 +779,7 @@
                 html += '<th class="week">' + this.locale.weekLabel + '</th>';
 
             $.each(this.locale.daysOfWeek, function(index, dayOfWeek) {
-                html += '<th>' + dayOfWeek + '</th>';
+                html += '<th class="day-of-week">' + dayOfWeek.substr(0, 1) + '</th>';
             });
 
             html += '</tr>';
@@ -1534,7 +1548,7 @@
             this.container.find('input[name="daterangepicker_start"], input[name="daterangepicker_end"]').removeClass('active');
             $(e.target).addClass('active');
 
-            // Set the state such that if the user goes back to using a mouse, 
+            // Set the state such that if the user goes back to using a mouse,
             // the calendars are aware we're selecting the end of the range, not
             // the start. This allows someone to edit the end of a date range without
             // re-selecting the beginning, by clicking on the end date input then
@@ -1573,7 +1587,7 @@
             // Other browsers and versions of IE are untested and the behaviour is unknown.
             if (e.keyCode === 13) {
                 // Prevent the calendar from being updated twice on Chrome/Firefox/Edge
-                e.preventDefault(); 
+                e.preventDefault();
                 this.formInputsChanged(e);
             }
         },
