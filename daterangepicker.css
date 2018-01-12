@@ -43,11 +43,11 @@
       line-height: 33px;
       position: absolute;
       top: 0;
-      padding-left: 0 10px; }
+      padding: 0px 10px; }
     .daterangepicker .calendar .prev {
-      left: 10px; }
+      left: 0px; }
     .daterangepicker .calendar .next {
-      right: 10px; }
+      right: 0px; }
   .daterangepicker table {
     margin: 10px; }
   .daterangepicker td, .daterangepicker th {

@@ -753,13 +753,13 @@
 
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                html += '<div class="btn prev available"><i class="ti-angle-left"></i></div>';
+                html += '<div class="btn prev available" dropdown-keep><i class="ti-angle-left"></i></div>';
             } else {
                 // html += '<th></th>';
             }
 
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
-                html += '<div class="btn next available"><i class="ti-angle-right"></i></div>';
+                html += '<div class="btn next available" dropdown-keep><i class="ti-angle-right"></i></div>';
             } else {
                 // html += '<th></th>';
             }
