@@ -115,7 +115,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
 //
 .#{$prefix-class} {
   position: absolute;
-  z-index: 99;
+  // z-index: 99;
   color: $daterangepicker-color;
   background-color: $daterangepicker-bg-color;
   // border-radius: $daterangepicker-border-radius;
@@ -217,8 +217,8 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   // }
 
   // &.dropdown-menu {
-  //   max-width: none;
-  //   z-index: $daterangepicker-dropdown-z-index;
+    max-width: none;
+    z-index: 3000;
   // }
 
   &.single {
